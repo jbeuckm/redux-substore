@@ -1,5 +1,5 @@
-import { mergeMap } from 'rxjs/operators'
-import { combineEpics, ofType, fromPromise } from 'redux-observable'
+import * as most from 'most'
+import { combineEpics, select, fromPromise } from 'redux-most'
 import { promisify } from 'es6-promisify'
 
 class Substore {
@@ -71,16 +71,18 @@ class Substore {
     }
   }
 
-  epic = action$ =>
-    action$.pipe(
-      ofType(this.ACTION_TYPE.REQUEST),
-      mergeMap(({ payload }) => {
-        return (this.promiseFunction || promisify(this.callbackFunction))
-          .apply(this, payload ? [payload] : null)
-          .then(this.successAction)
-          .catch(this.failureAction)
-      })
-    )
+  epic = action$ => {
+    const _this = this
+
+    return action$.thru(select(_this.ACTION_TYPE.REQUEST)).flatMap(({ payload }) => {
+      const requestFunction = _this.promiseFunction || promisify(_this.callbackFunction)
+
+      return most
+        .fromPromise(requestFunction.apply(_this, payload ? [payload] : null))
+        .flatMap(response => most.of(_this.successAction(response)))
+        .recoverWith(error => most.of(_this.failureAction(error)))
+    })
+  }
 }
 
 export default Substore

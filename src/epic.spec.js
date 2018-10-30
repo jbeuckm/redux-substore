@@ -1,15 +1,35 @@
-import { ActionsObservable } from 'redux-observable'
-import 'rxjs/add/operator/toArray'
+import * as most from 'most'
+import { select } from 'redux-most'
+import { run } from 'most-test'
+
+const expectEpicActions = ({ epic, store, incomingActions, expectedActions, tick }) => {
+  if (tick) {
+    jest.useRealTimers() // this is required for web tests
+
+    return run(epic(most.from(incomingActions), store))
+      .tick(tick)
+      .then(result => {
+        expect(stringifyWhitelists(result.events)).toEqual(stringifyWhitelists(expectedActions))
+      })
+  }
+
+  return epic(most.from(incomingActions), store)
+    .reduce((acc, next) => acc.concat(next), [])
+    .then(result => {
+      expect(stringifyWhitelists(result)).toEqual(stringifyWhitelists(expectedActions))
+    })
+}
+
 import Substore from './'
 
 describe('Substore epic', () => {
-  let substore, action$
+  let epic, substore, action$
 
   beforeEach(() => {
     substore = new Substore({ prefix: 'REQUEST_STUFF' })
     substore.failureAction = jest.fn()
     substore.successAction = jest.fn()
-    action$ = ActionsObservable.of(substore.requestAction())
+    action$ = most.of(substore.requestAction())
   })
 
   it('fails when a promise-returning function rejects', done => {
@@ -17,8 +37,8 @@ describe('Substore epic', () => {
 
     substore
       .epic(action$)
-      .toArray()
-      .subscribe(outputs => {
+      .reduce((acc, next) => acc.concat(next), [])
+      .then(result => {
         expect(substore.failureAction).toHaveBeenCalled()
         done()
       })
@@ -29,8 +49,8 @@ describe('Substore epic', () => {
 
     substore
       .epic(action$)
-      .toArray()
-      .subscribe(outputs => {
+      .reduce((acc, next) => acc.concat(next), [])
+      .then(result => {
         expect(substore.successAction).toHaveBeenCalled()
         done()
       })
@@ -41,8 +61,8 @@ describe('Substore epic', () => {
 
     substore
       .epic(action$)
-      .toArray()
-      .subscribe(outputs => {
+      .reduce((acc, next) => acc.concat(next), [])
+      .then(result => {
         expect(substore.failureAction).toHaveBeenCalled()
         done()
       })
@@ -53,8 +73,8 @@ describe('Substore epic', () => {
 
     substore
       .epic(action$)
-      .toArray()
-      .subscribe(outputs => {
+      .reduce((acc, next) => acc.concat(next), [])
+      .then(result => {
         expect(substore.successAction).toHaveBeenCalled()
         done()
       })
