@@ -2,7 +2,7 @@ import { mergeMap } from 'rxjs/operators'
 import { combineEpics, ofType, fromPromise } from 'redux-observable'
 import { promisify } from 'es6-promisify'
 
-class RequestSubstore {
+class Substore {
   constructor({ prefix, promiseFunction, callbackFunction, initialState, responseMap }) {
     this.prefix = prefix
     this.promiseFunction = promiseFunction
@@ -10,9 +10,13 @@ class RequestSubstore {
     this.responseMap = responseMap || (response => ({ data: response }))
 
     try {
-      this.initialState = { ...this.responseMap(null), isLoading: false, error: null }
+      this.initialState = {
+        ...this.responseMap(null),
+        isLoading: false,
+        error: null,
+      }
     } catch (error) {
-      const header = `RequestSubstore[${this.prefix}]:`
+      const header = `Substore[${this.prefix}]:`
       throw `${header} responseMap() must return an initial state when the argument is null.`
     }
   }
@@ -79,4 +83,4 @@ class RequestSubstore {
     )
 }
 
-export default RequestSubstore
+export default Substore

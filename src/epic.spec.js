@@ -1,12 +1,12 @@
 import { ActionsObservable } from 'redux-observable'
 import 'rxjs/add/operator/toArray'
-import RequestSubstore from './'
+import Substore from './'
 
-describe('RequestSubstore epic', () => {
+describe('Substore epic', () => {
   let substore, action$
 
   beforeEach(() => {
-    substore = new RequestSubstore({ prefix: 'REQUEST_STUFF' })
+    substore = new Substore({ prefix: 'REQUEST_STUFF' })
     substore.failureAction = jest.fn()
     substore.successAction = jest.fn()
     action$ = ActionsObservable.of(substore.requestAction())

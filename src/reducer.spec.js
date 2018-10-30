@@ -1,7 +1,7 @@
-import RequestSubstore from './'
+import Substore from './'
 
-describe('RequestSubstore reducer', () => {
-  const substore = new RequestSubstore({ prefix: 'REQUEST_STUFF' })
+describe('Substore reducer', () => {
+  const substore = new Substore({ prefix: 'REQUEST_STUFF' })
 
   it('sets initialState', () => {
     expect(substore.initialState).not.toBeNull()

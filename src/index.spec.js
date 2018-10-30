@@ -1,15 +1,15 @@
-import RequestSubstore from './'
+import Substore from './'
 
-describe('RequestSubstore', () => {
+describe('Substore', () => {
   let substore
 
   beforeEach(() => {
-    substore = new RequestSubstore({ prefix: 'PREFIX' })
+    substore = new Substore({ prefix: 'PREFIX' })
   })
 
   it('requires responseMap to handle null argument', () => {
     const buildSubstoreWithInvalidResponseMap = () =>
-      new RequestSubstore({
+      new Substore({
         responseMap: response => ({ data: response.property }),
       })
 
@@ -17,7 +17,7 @@ describe('RequestSubstore', () => {
   })
 
   it('sets initialState by calling responseMap(null)', done => {
-    new RequestSubstore({
+    new Substore({
       responseMap: response => {
         expect(response).toBeNull()
         done()
