@@ -26,10 +26,10 @@ describe('Substore', () => {
   })
 
   it('builds a set of action types', () => {
-    expect(substore.ACTION_TYPE).toHaveProperty('CLEAR', 'CLEAR_PREFIX')
-    expect(substore.ACTION_TYPE).toHaveProperty('REQUEST', 'REQUEST_PREFIX')
-    expect(substore.ACTION_TYPE).toHaveProperty('FAILURE', 'REQUEST_PREFIX_FAILURE')
-    expect(substore.ACTION_TYPE).toHaveProperty('SUCCESS', 'REQUEST_PREFIX_SUCCESS')
+    expect(substore.ACTION_TYPE).toHaveProperty('CLEAR', 'PREFIX_CLEAR')
+    expect(substore.ACTION_TYPE).toHaveProperty('REQUEST', 'PREFIX_REQUEST')
+    expect(substore.ACTION_TYPE).toHaveProperty('FAILURE', 'PREFIX_REQUEST_FAILURE')
+    expect(substore.ACTION_TYPE).toHaveProperty('SUCCESS', 'PREFIX_REQUEST_SUCCESS')
   })
 
   it('defines action creators', () => {

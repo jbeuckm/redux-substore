@@ -23,10 +23,10 @@ class Substore {
 
   get ACTION_TYPE() {
     return {
-      REQUEST: `REQUEST_${this.prefix}`,
-      CLEAR: `CLEAR_${this.prefix}`,
-      FAILURE: `REQUEST_${this.prefix}_FAILURE`,
-      SUCCESS: `REQUEST_${this.prefix}_SUCCESS`,
+      REQUEST: `${this.prefix}_REQUEST`,
+      CLEAR: `${this.prefix}_CLEAR`,
+      FAILURE: `${this.prefix}_REQUEST_FAILURE`,
+      SUCCESS: `${this.prefix}_REQUEST_SUCCESS`,
     }
   }
 
