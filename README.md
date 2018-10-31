@@ -4,6 +4,10 @@
 
 Collected actions, reducer, epic and state for an async request.
 
+### Run the demo!
+
+`yarn demo`
+
 ### How to use it:
 
 Create a new __Substore__ that will manage the `getMyData` request function.
@@ -57,4 +61,4 @@ Access the data or status of the substore by selecting the key you assigned in `
 
 `getState().myData.data` *(default responseMap sets this key)*
 
-If you need to clear the data in the __Substore__, dispatch `mySubstore.clear()`.
+If you need to clear the data in the __Substore__, dispatch `mySubstore.clearAction()`.

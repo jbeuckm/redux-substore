@@ -1,5 +1,5 @@
 import * as most from 'most'
-import { combineEpics, select, fromPromise } from 'redux-most'
+import { select, fromPromise } from 'redux-most'
 import { promisify } from 'es6-promisify'
 
 class Substore {
@@ -74,7 +74,7 @@ class Substore {
   epic = action$ => {
     const _this = this
 
-    return action$.thru(select(_this.ACTION_TYPE.REQUEST)).flatMap(({ payload }) => {
+    return action$.thru(select(this.ACTION_TYPE.REQUEST)).flatMap(({ payload }) => {
       const requestFunction = _this.promiseFunction || promisify(_this.callbackFunction)
 
       return most
