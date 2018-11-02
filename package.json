@@ -1,6 +1,7 @@
 {
   "name": "redux-substore",
-  "version": "0.1.1",
+  "version": "0.1.2",
+  "main": "dist/src/index.js",
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-polyfill": "^6.26.0",
