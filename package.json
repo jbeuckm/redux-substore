@@ -15,7 +15,8 @@
   },
   "scripts": {
     "test": "jest --coverage",
-    "demo": "node -r babel-register src/example.js"
+    "demo": "node -r babel-register src/example.js",
+    "build": "babel src/index.js --out-dir dist"
   },
   "dependencies": {
     "es6-promisify": "^6.0.0",
