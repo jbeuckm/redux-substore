@@ -3,11 +3,19 @@ import { select, fromPromise } from 'redux-most'
 import { promisify } from 'es6-promisify'
 
 class Substore {
-  constructor({ prefix, promiseFunction, callbackFunction, initialState, responseMap }) {
+  constructor({
+    prefix,
+    promiseFunction,
+    callbackFunction,
+    initialState,
+    responseMap,
+    actionMeta,
+  }) {
     this.prefix = prefix
     this.promiseFunction = promiseFunction
     this.callbackFunction = callbackFunction
     this.responseMap = responseMap || (response => ({ data: response }))
+    this.actionMeta = actionMeta || {}
 
     try {
       this.initialState = {
@@ -23,27 +31,33 @@ class Substore {
 
   get ACTION_TYPE() {
     return {
-      REQUEST: `${this.prefix}_REQUEST`,
-      CLEAR: `${this.prefix}_CLEAR`,
-      FAILURE: `${this.prefix}_REQUEST_FAILURE`,
-      SUCCESS: `${this.prefix}_REQUEST_SUCCESS`,
+      REQUEST: `${this.prefix}REQUEST`,
+      CLEAR: `${this.prefix}CLEAR`,
+      FAILURE: `${this.prefix}REQUEST_FAILURE`,
+      SUCCESS: `${this.prefix}REQUEST_SUCCESS`,
     }
   }
 
-  clearAction = () => ({ type: this.ACTION_TYPE.CLEAR })
-
-  requestAction = payload => ({ type: this.ACTION_TYPE.REQUEST, payload })
+  requestAction = payload => ({
+    type: this.ACTION_TYPE.REQUEST,
+    meta: this.actionMeta.requestAction,
+    payload,
+  })
 
   failureAction = error => ({
     type: this.ACTION_TYPE.FAILURE,
+    meta: this.actionMeta.failureAction,
     payload: error,
     error: true,
   })
 
   successAction = payload => ({
     type: this.ACTION_TYPE.SUCCESS,
+    meta: this.actionMeta.successAction,
     payload,
   })
+
+  clearAction = () => ({ type: this.ACTION_TYPE.CLEAR, meta: this.actionMeta.clearAction })
 
   reducer = (state = this.initialState, { type, payload }) => {
     switch (type) {

@@ -4,7 +4,7 @@ describe('Substore', () => {
   let substore
 
   beforeEach(() => {
-    substore = new Substore({ prefix: 'PREFIX' })
+    substore = new Substore({ prefix: 'prefix/' })
   })
 
   it('requires responseMap to handle null argument', () => {
@@ -26,10 +26,10 @@ describe('Substore', () => {
   })
 
   it('builds a set of action types', () => {
-    expect(substore.ACTION_TYPE).toHaveProperty('CLEAR', 'PREFIX_CLEAR')
-    expect(substore.ACTION_TYPE).toHaveProperty('REQUEST', 'PREFIX_REQUEST')
-    expect(substore.ACTION_TYPE).toHaveProperty('FAILURE', 'PREFIX_REQUEST_FAILURE')
-    expect(substore.ACTION_TYPE).toHaveProperty('SUCCESS', 'PREFIX_REQUEST_SUCCESS')
+    expect(substore.ACTION_TYPE).toHaveProperty('CLEAR', 'prefix/CLEAR')
+    expect(substore.ACTION_TYPE).toHaveProperty('REQUEST', 'prefix/REQUEST')
+    expect(substore.ACTION_TYPE).toHaveProperty('FAILURE', 'prefix/REQUEST_FAILURE')
+    expect(substore.ACTION_TYPE).toHaveProperty('SUCCESS', 'prefix/REQUEST_SUCCESS')
   })
 
   it('defines action creators', () => {
