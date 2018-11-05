@@ -28,21 +28,23 @@ var Substore = function () {
         promiseFunction = _ref.promiseFunction,
         callbackFunction = _ref.callbackFunction,
         initialState = _ref.initialState,
-        responseMap = _ref.responseMap;
+        responseMap = _ref.responseMap,
+        actionMeta = _ref.actionMeta;
 
     _classCallCheck(this, Substore);
 
-    this.clearAction = function () {
-      return { type: _this2.ACTION_TYPE.CLEAR };
-    };
-
     this.requestAction = function (payload) {
-      return { type: _this2.ACTION_TYPE.REQUEST, payload: payload };
+      return {
+        type: _this2.ACTION_TYPE.REQUEST,
+        meta: _this2.actionMeta.requestAction,
+        payload: payload
+      };
     };
 
     this.failureAction = function (error) {
       return {
         type: _this2.ACTION_TYPE.FAILURE,
+        meta: _this2.actionMeta.failureAction,
         payload: error,
         error: true
       };
@@ -51,8 +53,13 @@ var Substore = function () {
     this.successAction = function (payload) {
       return {
         type: _this2.ACTION_TYPE.SUCCESS,
+        meta: _this2.actionMeta.successAction,
         payload: payload
       };
+    };
+
+    this.clearAction = function () {
+      return { type: _this2.ACTION_TYPE.CLEAR, meta: _this2.actionMeta.clearAction };
     };
 
     this.reducer = function () {
@@ -104,6 +111,7 @@ var Substore = function () {
     this.responseMap = responseMap || function (response) {
       return { data: response };
     };
+    this.actionMeta = actionMeta || {};
 
     try {
       this.initialState = _extends({}, this.responseMap(null), {
@@ -120,10 +128,10 @@ var Substore = function () {
     key: 'ACTION_TYPE',
     get: function get() {
       return {
-        REQUEST: this.prefix + '_REQUEST',
-        CLEAR: this.prefix + '_CLEAR',
-        FAILURE: this.prefix + '_REQUEST_FAILURE',
-        SUCCESS: this.prefix + '_REQUEST_SUCCESS'
+        REQUEST: this.prefix + 'REQUEST',
+        CLEAR: this.prefix + 'CLEAR',
+        FAILURE: this.prefix + 'REQUEST_FAILURE',
+        SUCCESS: this.prefix + 'REQUEST_SUCCESS'
       };
     }
   }]);
