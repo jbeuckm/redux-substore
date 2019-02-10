@@ -5,6 +5,7 @@ import { promisify } from 'es6-promisify'
 class Substore {
   constructor({
     prefix,
+    promiseFunctionFactory,
     promiseFunction,
     callbackFunction,
     initialState,
@@ -12,6 +13,7 @@ class Substore {
     actionMeta,
   }) {
     this.prefix = prefix
+    this.promiseFunctionFactory = promiseFunctionFactory
     this.promiseFunction = promiseFunction
     this.callbackFunction = callbackFunction
     this.responseMap = responseMap || (response => ({ data: response }))
@@ -97,7 +99,6 @@ class Substore {
     }
 
     return action$.thru(select(this.ACTION_TYPE.REQUEST)).flatMap(({ payload }) => {
-
       return most
         .fromPromise(requestFunction.apply(_this, payload ? [payload] : null))
         .flatMap(response => most.of(_this.successAction(response)))
