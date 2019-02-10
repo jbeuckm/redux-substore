@@ -25,6 +25,7 @@ var Substore = function () {
     var _this2 = this;
 
     var prefix = _ref.prefix,
+        promiseFunctionFactory = _ref.promiseFunctionFactory,
         promiseFunction = _ref.promiseFunction,
         callbackFunction = _ref.callbackFunction,
         initialState = _ref.initialState,
@@ -103,7 +104,6 @@ var Substore = function () {
       return action$.thru((0, _reduxMost.select)(_this2.ACTION_TYPE.REQUEST)).flatMap(function (_ref3) {
         var payload = _ref3.payload;
 
-
         return most.fromPromise(requestFunction.apply(_this, payload ? [payload] : null)).flatMap(function (response) {
           return most.of(_this.successAction(response));
         }).recoverWith(function (error) {
@@ -113,6 +113,7 @@ var Substore = function () {
     };
 
     this.prefix = prefix;
+    this.promiseFunctionFactory = promiseFunctionFactory;
     this.promiseFunction = promiseFunction;
     this.callbackFunction = callbackFunction;
     this.responseMap = responseMap || function (response) {

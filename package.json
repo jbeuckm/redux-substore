@@ -1,6 +1,6 @@
 {
   "name": "redux-substore",
-  "version": "0.2.6",
+  "version": "0.2.61",
   "main": "dist/src/index.js",
   "repository": {
     "type" : "git",
