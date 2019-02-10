@@ -32,6 +32,24 @@ describe('Substore epic', () => {
     action$ = most.of(substore.requestAction())
   })
 
+  it('uses promiseFunctionFactory if set', done => {
+    substore.promiseFunctionFactory = jest
+      .fn()
+      .mockImplementation(store => () => Promise.resolve(store.getState()))
+
+    const getState = jest.fn()
+
+    substore
+      .epic(action$, { getState })
+      .reduce((acc, next) => acc.concat(next), [])
+      .then(result => {
+        expect(getState).toHaveBeenCalled()
+        expect(substore.promiseFunctionFactory).toHaveBeenCalled()
+        expect(substore.successAction).toHaveBeenCalled()
+        done()
+      })
+  })
+
   it('fails when a promise-returning function rejects', done => {
     substore.promiseFunction = () => Promise.reject()
 
