@@ -2,6 +2,10 @@
   "name": "redux-substore",
   "version": "0.2.4",
   "main": "dist/src/index.js",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/jbeuckm/redux-substore.git"
+  },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-polyfill": "^6.26.0",
