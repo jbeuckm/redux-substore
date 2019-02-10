@@ -93,16 +93,16 @@ var Substore = function () {
     this.epic = function (action$, store) {
       var _this = _this2;
 
-      var requestFunction = void 0;
-
-      if (_this2.promiseFunctionFactory) {
-        requestFunction = _this2.promiseFunctionFactory(store);
-      } else {
-        requestFunction = _this2.promiseFunction || (0, _es6Promisify.promisify)(_this2.callbackFunction);
-      }
-
       return action$.thru((0, _reduxMost.select)(_this2.ACTION_TYPE.REQUEST)).flatMap(function (_ref3) {
         var payload = _ref3.payload;
+
+        var requestFunction = void 0;
+
+        if (_this.promiseFunctionFactory) {
+          requestFunction = _this.promiseFunctionFactory(store);
+        } else {
+          requestFunction = _this.promiseFunction || (0, _es6Promisify.promisify)(_this.callbackFunction);
+        }
 
         return most.fromPromise(requestFunction.apply(_this, payload ? [payload] : null)).flatMap(function (response) {
           return most.of(_this.successAction(response));

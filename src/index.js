@@ -90,15 +90,15 @@ class Substore {
   epic = (action$, store) => {
     const _this = this
 
-    let requestFunction
-
-    if (this.promiseFunctionFactory) {
-      requestFunction = this.promiseFunctionFactory(store)
-    } else {
-      requestFunction = this.promiseFunction || promisify(this.callbackFunction)
-    }
-
     return action$.thru(select(this.ACTION_TYPE.REQUEST)).flatMap(({ payload }) => {
+      let requestFunction
+
+      if (_this.promiseFunctionFactory) {
+        requestFunction = _this.promiseFunctionFactory(store)
+      } else {
+        requestFunction = _this.promiseFunction || promisify(_this.callbackFunction)
+      }
+
       return most
         .fromPromise(requestFunction.apply(_this, payload ? [payload] : null))
         .flatMap(response => most.of(_this.successAction(response)))
